@@ -20,6 +20,9 @@
 
 import pcbnew
 import math
+import os
+from subprocess import Popen
+import wx
 from trackUtils import *
 from pprint import pprint
 
@@ -27,23 +30,37 @@ class flex_round( pcbnew.ActionPlugin ):
  
     def defaults( self ):
 
-        self.name = "Tracks rounding"
+        self.name = "Round the tracks (new file)"
         self.category = "Modify PCB"
         self.description = "Will round all tracks on the PCB"
+        self.icon_file_name = os.path.join(os.path.dirname(__file__), "./round_tracks.png")
 
     def Run( self ):
+
+        # save a copy of the board
+        
+        board = pcbnew.GetBoard()
+        new_name = board.GetFileName()+"-rounded"
+        board.Save(new_name)
+        board = pcbnew.LoadBoard(new_name, pcbnew.IO_MGR.KICAD_SEXP)
+
         for i in range(4):
-            self.addIntermediateTracks()
+            self.addIntermediateTracks(board)
+
+        board.Save(new_name)
+        d = wx.MessageDialog(None, 'The new file with rounded tracks has been saved as :\n\''+new_name.split("/")[-1]+'\'\nDo you want to open it in a new window ?', 'Tracks rounding',
+            wx.YES_NO | wx.NO_DEFAULT)
+        result = d.ShowModal()
+        if result == wx.ID_YES:
+            Popen(['pcbnew', new_name])
+
     
-    def addIntermediateTracks( self ):
+    def addIntermediateTracks( self, board):
 
         # maximum path length is set to .2mm, and progressive shortening is 25% 
         MAXLENGTH = 0.5 # % of length of track used for the arc
         SCALING   = 0.5  # radius
         SCALE = 1000000.0  
-
-        # most queries start with a board
-        board = pcbnew.GetBoard()
 
         # returns a dictionary netcode:netinfo_item
         netcodes = board.GetNetsByNetcode()
