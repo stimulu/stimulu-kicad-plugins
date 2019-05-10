@@ -1,0 +1,3 @@
+[submodule "kicad-round-tracks"]
+	path = kicad-round-tracks
+	url = https://github.com/stimulu/kicad-round-tracks
