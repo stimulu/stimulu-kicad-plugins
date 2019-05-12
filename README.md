@@ -1,5 +1,5 @@
 # kicad-plugins
-KiCad plugins to reproduce or use Stimulu board files.
+Collection of KiCad plugins to reproduce or use Stimulu board files.
 
 Copy the contents of this repo to a folder in the plugin path of KiCad => 5, typically `~/.kicad_plugins`.  
 Then access the plugins in the top menu of PCBNew : `Tools` → `External Plugins...`
