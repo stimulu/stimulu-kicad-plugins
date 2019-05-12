@@ -1,3 +1,6 @@
 [submodule "kicad-round-tracks"]
 	path = kicad-round-tracks
 	url = https://github.com/stimulu/kicad-round-tracks
+[submodule "kicad-teardrops"]
+	path = kicad-teardrops
+	url = https://github.com/stimulu/kicad-teardrops
